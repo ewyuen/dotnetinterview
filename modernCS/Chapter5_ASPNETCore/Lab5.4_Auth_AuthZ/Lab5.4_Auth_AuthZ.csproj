@@ -15,8 +15,7 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-  </ItemGroup>
     <ProjectReference Include="..\Lab5.5_CQRS\Lab5.5_CQRS.csproj" />
   </ItemGroup>
-
+</Project>
   <!-- NOTE: Lab5.5_CQRS is now a standalone web project; keep the reference only if you need to share types. If you prefer Lab5.4 to remain independent, remove the ProjectReference. -->
