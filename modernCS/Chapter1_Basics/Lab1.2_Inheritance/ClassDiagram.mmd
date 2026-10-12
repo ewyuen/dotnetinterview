@@ -1,0 +1,30 @@
+﻿classDiagram
+    class Book {
+        +string Title
+        +string Author
+        +string ISBN
+        +bool IsAvailable
+        +CheckOut(): void
+        +Return(): void
+        +DisplayInfo(): void
+    }
+
+    class Vehicle {
+        +string Make
+        +string Model
+        +int Year
+        +DisplayInfo(): void
+    }
+
+    class Car {
+        +int NumberOfDoors
+        +DisplayInfo(): void
+    }
+
+    class Bike {
+        +bool HasSidecar
+        +DisplayInfo(): void
+    }
+
+    Vehicle <|-- Car : inherits
+    Vehicle <|-- Bike : inherits

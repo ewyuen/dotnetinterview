@@ -1,0 +1,10 @@
+@startuml
+' Proxy class diagram
+interface IProxySubject
+class RealSubject
+class Proxy
+
+Proxy ..|> IProxySubject
+RealSubject ..|> IProxySubject
+Proxy --> RealSubject : controls
+@enduml

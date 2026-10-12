@@ -1,0 +1,21 @@
+classDiagram
+    class TodoTask {
+        +int Id
+        +string Title
+        +string? Description
+        +bool IsCompleted
+        +DateTime CreatedDate
+        +TodoTask(int id, string title, string? description)
+        +TodoTask MarkCompleted()
+        +TodoTask UpdateDescription(string newDescription)
+        +DisplayInfo()
+    }
+
+    class Program {
+        +Main(string[] args)
+    }
+
+    Program --> TodoTask : creates and uses
+
+    note for TodoTask "Record with init-only properties (Id, Title, Description can only be set during initialization)"
+    note for Program "Demonstrates init-only setters and immutability concepts"

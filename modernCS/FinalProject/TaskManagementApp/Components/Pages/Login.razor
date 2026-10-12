@@ -1,0 +1,120 @@
+@page "/login"
+@inject TaskManager.Shared.Services.IAuthService AuthService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Login</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Login</h3>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(SuccessMessage))
+                    {
+                        <div class="alert alert-success">
+                            @SuccessMessage
+                        </div>
+                    }
+
+                    <EditForm Model="LoginModel" OnValidSubmit="HandleLogin" FormName="loginForm">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <InputText id="email" @bind-Value="LoginModel.Email" class="form-control" placeholder="Enter your email" />
+                            <ValidationMessage For="@(() => LoginModel.Email)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <InputText id="password" @bind-Value="LoginModel.Password" type="password" class="form-control" placeholder="Enter your password" />
+                            <ValidationMessage For="@(() => LoginModel.Password)" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary" disabled="@IsLoading">
+                                @if (IsLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    <text>Logging in...</text>
+                                }
+                                else
+                                {
+                                    <text>Login</text>
+                                }
+                            </button>
+                        </div>
+                    </EditForm>
+
+                    <div class="text-center mt-3">
+                        <p>Don't have an account? <a href="/register">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "returnUrl")]
+    public string? ReturnUrl { get; set; }
+
+    private LoginViewModel LoginModel { get; set; } = new();
+    private bool IsLoading { get; set; }
+    private string? SuccessMessage { get; set; }
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        // Check if already authenticated
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (isAuthenticated)
+        {
+            Navigation.NavigateTo(ReturnUrl ?? "/tasks");
+        }
+    }
+
+    private async System.Threading.Tasks.Task HandleLogin()
+    {
+        IsLoading = true;
+        SuccessMessage = null;
+
+        try
+        {
+            var result = await AuthService.LoginAsync(new TaskManager.Shared.Models.LoginRequest(LoginModel.Email, LoginModel.Password));
+
+            if (result.Success)
+            {
+                // Navigate to return URL or tasks page
+                Navigation.NavigateTo(ReturnUrl ?? "/tasks");
+            }
+            else
+            {
+                // Show error (handled by validation summary)
+                await JSRuntime.InvokeVoidAsync("alert", $"Login failed: {result.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public class LoginViewModel
+    {
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Password { get; set; } = string.Empty;
+    }
+}

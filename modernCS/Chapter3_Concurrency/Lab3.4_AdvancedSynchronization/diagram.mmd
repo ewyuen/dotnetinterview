@@ -1,0 +1,69 @@
+---
+title: Lab 3.4 - Advanced Synchronization Primitives
+---
+
+flowchart TD
+    A[Concurrent Access Patterns] --> B{Synchronization Needs}
+
+    B --> C[Resource Pool Control]
+    B --> D[Cross-Process Sync]
+    B --> E[Read-Heavy Access]
+    B --> F[Complex Scenarios]
+
+    C --> G[Semaphore]
+    C --> H[SemaphoreSlim]
+
+    D --> I[Mutex]
+
+    E --> J[ReaderWriterLock]
+    E --> K[ReaderWriterLockSlim]
+
+    F --> L[Combined Primitives]
+
+    G --> M[WaitOne/Release]
+    H --> N[WaitAsync/Release]
+
+    I --> O[WaitOne/ReleaseMutex]
+
+    J --> P[AcquireReaderLock]
+    J --> Q[AcquireWriterLock]
+
+    K --> R[EnterReadLock]
+    K --> S[EnterWriteLock]
+    K --> T[EnterUpgradeableReadLock]
+
+    L --> U[Semaphore + ReaderWriterLock]
+
+    subgraph "Semaphore Family"
+        V[Count-based Access Control]
+        V --> W[Resource Pool Management]
+        V --> X[Rate Limiting]
+        V --> Y[Bounded Parallelism]
+    end
+
+    subgraph "Mutex"
+        Z[Exclusive Access]
+        Z --> AA[Cross-Process Synchronization]
+        Z --> BB[System-wide Locks]
+        Z --> CC[Named Mutexes]
+    end
+
+    subgraph "ReaderWriterLock Family"
+        DD[Multiple Readers OR Single Writer]
+        DD --> EE[Read-Heavy Workloads]
+        DD --> FF[Cache Scenarios]
+        DD --> GG[Configuration Data]
+    end
+
+    subgraph "Performance Characteristics"
+        HH[SemaphoreSlim > Semaphore]
+        II[ReaderWriterLockSlim > ReaderWriterLock]
+        JJ[Monitor > Mutex for same-process]
+    end
+
+    subgraph "Common Patterns"
+        KK[Resource Pool]
+        LL[Producer-Consumer]
+        MM[Cache with Invalidation]
+        NN[Configuration Management]
+    end

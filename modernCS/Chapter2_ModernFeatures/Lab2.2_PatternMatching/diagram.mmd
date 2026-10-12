@@ -1,0 +1,22 @@
+classDiagram
+    class Task {
+        +int Id
+        +string Title
+        +string? Description
+        +bool IsCompleted
+        +DateTime CreatedDate
+        +MarkCompleted() Task
+        +UpdateDescription(string) Task
+        +DisplayInfo() void
+    }
+
+    class Program {
+        +Main() void
+        +AnalyzeTask(Task) string
+        +AnalyzeObject(object) string
+    }
+
+    Program --> Task : uses
+
+    note for Task "Record type with pattern matching examples"
+    note for Program "Demonstrates switch expressions and property patterns"

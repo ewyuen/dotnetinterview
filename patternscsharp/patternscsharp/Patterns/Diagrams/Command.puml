@@ -1,0 +1,11 @@
+@startuml
+' Command class diagram
+interface ICommand
+class Receiver
+class ConcreteCommand
+class Invoker
+
+ConcreteCommand ..|> ICommand
+ConcreteCommand --> Receiver : invokes
+Invoker --> ICommand : holds
+@enduml

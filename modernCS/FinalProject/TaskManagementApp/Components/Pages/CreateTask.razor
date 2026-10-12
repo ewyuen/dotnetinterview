@@ -1,0 +1,50 @@
+@page "/tasks/create"
+@inject TaskManager.Shared.Services.ITaskService TaskService
+@inject NavigationManager Navigation
+
+<PageTitle>Create Task</PageTitle>
+
+<h1>Create Task</h1>
+
+<EditForm Model="taskRequest" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="title">Title</label>
+        <InputText id="title" @bind-Value="taskRequest.Title" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <InputTextArea id="description" @bind-Value="taskRequest.Description" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="priority">Priority</label>
+        <InputSelect id="priority" @bind-Value="taskRequest.Priority" class="form-control">
+            @foreach (var priority in Enum.GetValues(typeof(TaskManager.Shared.Models.TaskPriority)))
+            {
+                <option value="@priority">@priority</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label for="dueDate">Due Date</label>
+        <InputDate @bind-Value="taskRequest.DueDate" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a href="/tasks" class="btn btn-secondary">Cancel</a>
+</EditForm>
+
+@code {
+    private CreateTaskRequest taskRequest = new();
+
+    private async System.Threading.Tasks.Task HandleValidSubmit()
+    {
+        await TaskService.CreateTaskAsync(taskRequest);
+        Navigation.NavigateTo("/tasks");
+    }
+}

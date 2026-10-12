@@ -1,0 +1,11 @@
+@startuml
+' Builder class diagram
+class BuilderProduct
+interface IBuilder
+class ConcreteBuilder
+class Director
+
+ConcreteBuilder ..|> IBuilder
+Director --> IBuilder : uses
+ConcreteBuilder --> BuilderProduct : builds
+@enduml

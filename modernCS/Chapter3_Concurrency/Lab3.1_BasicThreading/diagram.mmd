@@ -1,0 +1,54 @@
+---
+title: Lab 3.1 - Basic Threading Concepts
+---
+
+flowchart TD
+    A[Main Thread] --> B[Create Thread 1]
+    A --> C[Create Thread 2]
+    A --> D[Create Producer Thread]
+    A --> E[Create Consumer Thread]
+
+    B --> F[Execute Counter.IncrementUnsafe]
+    C --> F
+    F --> G{Race Condition}
+    G --> H[Unpredictable Results]
+
+    B --> I[Execute CounterSafe.IncrementSafe]
+    C --> I
+    I --> J[lock Statement]
+    J --> K[Thread-Safe Operations]
+
+    D --> L[Producer Thread]
+    L --> M[BoundedBuffer.Put]
+    M --> N[Monitor.Wait/Pulse]
+    N --> O[Buffer Full?]
+
+    E --> P[Consumer Thread]
+    P --> Q[BoundedBuffer.Take]
+    Q --> N
+
+    O -->|Yes| R[Wait for Consumer]
+    O -->|No| S[Add Item]
+
+    T[Buffer Empty?] -->|Yes| U[Wait for Producer]
+    T -->|No| V[Remove Item]
+
+    subgraph "Thread Synchronization"
+        J
+        N
+    end
+
+    subgraph "Race Condition Demo"
+        F
+        G
+        H
+    end
+
+    subgraph "Producer-Consumer Pattern"
+        L
+        M
+        P
+        Q
+        O
+        T
+    end

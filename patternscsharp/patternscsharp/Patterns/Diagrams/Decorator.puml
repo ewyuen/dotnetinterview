@@ -1,0 +1,12 @@
+@startuml
+' Decorator class diagram
+abstract class ComponentBase
+class ConcreteComponent
+abstract class DecoratorBase
+class ConcreteDecoratorA
+
+ConcreteComponent --|> ComponentBase
+DecoratorBase --|> ComponentBase
+ConcreteDecoratorA --|> DecoratorBase
+DecoratorBase --> ComponentBase : wraps
+@enduml

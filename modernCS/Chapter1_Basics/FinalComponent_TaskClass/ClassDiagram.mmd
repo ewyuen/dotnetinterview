@@ -1,0 +1,62 @@
+﻿classDiagram
+    class Book {
+        +string Title
+        +string Author
+        +string ISBN
+        +bool IsAvailable
+        +CheckOut(): void
+        +Return(): void
+        +DisplayInfo(): void
+    }
+
+    class Vehicle {
+        +string Make
+        +string Model
+        +int Year
+        +DisplayInfo(): void
+    }
+
+    class Car {
+        +int NumberOfDoors
+        +DisplayInfo(): void
+    }
+
+    class Bike {
+        +bool HasSidecar
+        +DisplayInfo(): void
+    }
+
+    class ISearchable~T~ as ISearchable {
+        <<interface>>
+        +Search(query: string): IEnumerable~T~
+    }
+
+    class Library~T~ as Library {
+        -List~T~ _items
+        +int Count
+        +bool IsReadOnly
+        +Add(item: T): void
+        +Clear(): void
+        +Contains(item: T): bool
+        +CopyTo(array: T[], arrayIndex: int): void
+        +Remove(item: T): bool
+        +GetEnumerator(): IEnumerator~T~
+        +Search(query: string): IEnumerable~T~
+        +GetAll(): void
+    }
+
+    class Task {
+        +int Id
+        +string Title
+        +string Description
+        +bool IsCompleted
+        +DateTime CreatedDate
+        +MarkCompleted(): void
+        +UpdateDescription(desc: string): void
+        +DisplayInfo(): void
+    }
+
+    Vehicle <|-- Car : inherits
+    Vehicle <|-- Bike : inherits
+    Library ..|> ISearchable : implements
+    Library ..|> ICollection~T~ : implements

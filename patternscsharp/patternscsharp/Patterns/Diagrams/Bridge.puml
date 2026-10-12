@@ -1,0 +1,13 @@
+@startuml
+' Bridge class diagram
+interface IImplementor
+class ConcreteImplementorA
+class ConcreteImplementorB
+abstract class Abstraction
+class RefinedAbstraction
+
+ConcreteImplementorA ..|> IImplementor
+ConcreteImplementorB ..|> IImplementor
+RefinedAbstraction --|> Abstraction
+Abstraction --> IImplementor : uses
+@enduml

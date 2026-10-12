@@ -1,0 +1,4 @@
+@startuml
+' Interpreter class diagram (simplified)
+class Interpreter
+@enduml

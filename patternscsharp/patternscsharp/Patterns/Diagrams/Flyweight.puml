@@ -1,0 +1,7 @@
+@startuml
+' Flyweight class diagram
+class Flyweight
+class FlyweightFactory
+
+FlyweightFactory --> Flyweight : shares
+@enduml

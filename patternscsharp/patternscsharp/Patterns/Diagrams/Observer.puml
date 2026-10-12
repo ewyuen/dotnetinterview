@@ -1,0 +1,11 @@
+@startuml
+' Observer class diagram
+interface IObserver
+interface ISubject
+class ConcreteSubject
+class ConcreteObserver
+
+ConcreteObserver ..|> IObserver
+ConcreteSubject ..|> ISubject
+ConcreteSubject --> IObserver : notifies
+@enduml

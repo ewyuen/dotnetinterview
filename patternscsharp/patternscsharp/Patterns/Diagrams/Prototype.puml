@@ -1,0 +1,4 @@
+@startuml
+' Prototype class diagram
+class Prototype
+@enduml

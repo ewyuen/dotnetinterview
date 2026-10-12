@@ -1,0 +1,47 @@
+---
+title: Lab 4.1 - Basic Async/Await Flow
+---
+
+flowchart TD
+    A[Main Thread] --> B[Call Async Method]
+
+    B --> C[async Method]
+    C --> D[await Operation]
+    D --> E[Return Control to Caller]
+
+    E --> F[Operation Completes]
+    F --> G[Resume Method Execution]
+
+    G --> H[Method Returns Task]
+
+    subgraph "Async Method Lifecycle"
+        I[Method Called] --> J[Execute Until await]
+        J --> K[Capture Context]
+        K --> L[Start Async Operation]
+        L --> M[Return Incomplete Task]
+        M --> N[Operation Completes]
+        N --> O[Schedule Continuation]
+        O --> P[Resume on Captured Context]
+    end
+
+    subgraph "Task Coordination"
+        Q[Task.WhenAll] --> R[Start All Tasks]
+        R --> S[Wait for All Complete]
+        S --> T[Return Results Array]
+
+        U[Task.WhenAny] --> V[Start All Tasks]
+        V --> W[Wait for First Complete]
+        W --> X[Return First Task]
+    end
+
+    subgraph "Async Patterns"
+        Y[async Task Method] --> Z[Return Task]
+        AA[async Task&lt;T&gt; Method] --> BB[Return Task&lt;T&gt;]
+        CC[async void Method] --> DD[Fire-and-Forget]
+    end
+
+    subgraph "I/O Operations"
+        EE[File.ReadAllTextAsync] --> FF[Non-blocking File I/O]
+        GG[HttpClient.GetAsync] --> HH[Non-blocking Network I/O]
+        II[Task.Delay] --> JJ[Non-blocking Delay]
+    end

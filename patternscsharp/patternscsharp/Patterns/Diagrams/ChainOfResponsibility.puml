@@ -1,0 +1,10 @@
+@startuml
+' Chain of Responsibility class diagram
+abstract class Handler
+class ConcreteHandlerA
+class ConcreteHandlerB
+
+ConcreteHandlerA --|> Handler
+ConcreteHandlerB --|> Handler
+Handler -> Handler : next
+@enduml

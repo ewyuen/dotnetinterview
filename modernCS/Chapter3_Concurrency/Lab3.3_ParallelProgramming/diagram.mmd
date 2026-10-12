@@ -1,0 +1,63 @@
+---
+title: Lab 3.3 - Parallel Programming Concepts
+---
+
+flowchart TD
+    A[Data Source] --> B{Choose Parallel Method}
+
+    B --> C[Parallel.ForEach]
+    B --> D[Parallel LINQ]
+    B --> E[Parallel.For]
+
+    C --> F[Partition Data]
+    D --> F
+    E --> F
+
+    F --> G[Distribute to Threads]
+    G --> H[Process in Parallel]
+
+    H --> I[Thread 1]
+    H --> J[Thread 2]
+    H --> K[Thread N]
+
+    I --> L[Local Results]
+    J --> L
+    K --> L
+
+    L --> M[Aggregate Results]
+
+    subgraph "Parallel.ForEach"
+        N[Collection] --> O[Action Delegate]
+        O --> P[Thread-Safe Accumulation]
+    end
+
+    subgraph "PLINQ"
+        Q[LINQ Query] --> R[.AsParallel()]
+        R --> S[Parallel Execution]
+        S --> T[Optional .AsOrdered()]
+    end
+
+    subgraph "Parallel.For"
+        U[Range] --> V[Body Delegate]
+        V --> W[Thread-Local State]
+        W --> X[Final Action]
+    end
+
+    subgraph "Configuration"
+        Y[ParallelOptions]
+        Y --> Z[MaxDegreeOfParallelism]
+        Y --> AA[CancellationToken]
+    end
+
+    subgraph "Error Handling"
+        BB[AggregateException]
+        BB --> CC[InnerExceptions]
+        CC --> DD[Handle Multiple Errors]
+    end
+
+    subgraph "Performance Considerations"
+        EE[CPU Intensive?] -->|Yes| FF[Use Parallel]
+        EE -->|No| GG[Use Sequential]
+        FF --> HH[Measure Performance]
+        HH --> II[Verify Benefits]
+    end

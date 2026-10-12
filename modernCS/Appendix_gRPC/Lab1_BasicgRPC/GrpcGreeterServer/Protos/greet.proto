@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcGreeter";
+
+package greet;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply);
+  
+  // Sends another greeting
+  rpc SayHelloAgain (HelloRequest) returns (HelloReply);
+  
+  // Gets the greeting count
+  rpc GetGreetingCount (Empty) returns (CountReply);
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings.
+message HelloReply {
+  string message = 1;
+}
+
+// Empty message for requests with no parameters
+message Empty {}
+
+// Response message containing the count
+message CountReply {
+  int32 count = 1;
+}

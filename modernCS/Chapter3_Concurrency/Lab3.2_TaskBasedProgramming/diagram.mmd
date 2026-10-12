@@ -1,0 +1,66 @@
+---
+title: Lab 3.2 - Task-Based Programming Flow
+---
+
+flowchart TD
+    A[Main Thread] --> B[Task.Run]
+    A --> C[Task.Run with Result]
+    A --> D[Task with Continuation]
+    A --> E[Cancellable Task]
+    A --> F[Parallel Tasks]
+
+    B --> G[Fire-and-Forget Task]
+    G --> H[Task.WhenAll]
+
+    C --> I[Task&lt;int&gt;]
+    I --> J[await Result]
+
+    D --> K[Primary Task]
+    K --> L[ContinueWith]
+    L --> M[Continuation Task]
+
+    E --> N[CancellationTokenSource]
+    N --> O[CancellationToken]
+    O --> P[Task with Token]
+    P --> Q{Cancelled?}
+    Q -->|Yes| R[OperationCanceledException]
+    Q -->|No| S[Continue Work]
+
+    F --> T[Multiple Tasks]
+    T --> U[Task.WhenAll]
+    U --> V[All Complete]
+
+    subgraph "Task Creation"
+        B
+        C
+    end
+
+    subgraph "Task Continuation"
+        D
+        K
+        L
+        M
+    end
+
+    subgraph "Task Cancellation"
+        E
+        N
+        O
+        P
+        Q
+        R
+        S
+    end
+
+    subgraph "Task Coordination"
+        F
+        T
+        U
+        V
+    end
+
+    subgraph "Exception Handling"
+        W[Task Exception]
+        W --> X[AggregateException]
+        X --> Y[Handle Exceptions]
+    end

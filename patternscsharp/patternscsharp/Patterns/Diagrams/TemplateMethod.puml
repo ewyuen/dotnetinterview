@@ -1,0 +1,7 @@
+@startuml
+' Template Method class diagram
+abstract class AbstractClass
+class ConcreteClass
+
+ConcreteClass --|> AbstractClass
+@enduml

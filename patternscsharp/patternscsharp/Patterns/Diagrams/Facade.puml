@@ -1,0 +1,11 @@
+@startuml
+' Facade class diagram
+class SubsystemA
+class SubsystemB
+class SubsystemC
+class Facade
+
+Facade --> SubsystemA
+Facade --> SubsystemB
+Facade --> SubsystemC
+@enduml

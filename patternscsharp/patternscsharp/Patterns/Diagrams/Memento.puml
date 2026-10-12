@@ -1,0 +1,7 @@
+@startuml
+' Memento class diagram
+class Memento
+class Originator
+
+Originator --> Memento : saves
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+' State class diagram
+interface IState
+class Context
+class ConcreteStateA
+class ConcreteStateB
+
+ConcreteStateA ..|> IState
+ConcreteStateB ..|> IState
+Context --> IState : delegates
+@enduml

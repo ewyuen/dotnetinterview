@@ -1,0 +1,62 @@
+classDiagram
+    class TaskItem {
+        +int Id
+        +string Title
+        +string? Description
+        +TaskPriority Priority
+        +DateTime? DueDate
+        +bool IsCompleted
+        +DateTime CreatedDate
+        +List~string~ Tags
+        +TaskItem(int id, string title, TaskPriority priority)
+        +TaskItem MarkCompleted()
+        +TaskItem UpdateDescription(string? description)
+        +TaskItem SetDueDate(DateTime? dueDate)
+        +TaskItem AddTag(string tag)
+        +DisplayInfo()
+    }
+
+    class TaskAnalyzer {
+        +AnalyzeTask(TaskItem task) string
+        +FilterTasks(IEnumerable~TaskItem~, TaskFilter filter) IEnumerable~TaskItem~
+        +GetTaskSummary(IEnumerable~TaskItem~ tasks) string
+    }
+
+    class TaskFilter {
+        +TaskStatus? Status
+        +TaskPriority? Priority
+        +bool? HasDueDate
+        +string? Tag
+    }
+
+    class Program {
+        +Main(string[] args)
+    }
+
+    class TaskPriority {
+        <<enumeration>>
+        Low
+        Medium
+        High
+        Urgent
+    }
+
+    class TaskStatus {
+        <<enumeration>>
+        Pending
+        Completed
+    }
+
+    Program --> TaskItem : creates and manages
+    Program --> TaskAnalyzer : uses for analysis
+    Program --> TaskFilter : uses for filtering
+    TaskAnalyzer --> TaskItem : analyzes
+    TaskAnalyzer --> TaskFilter : uses for filtering
+    TaskItem --> TaskPriority : uses
+    TaskFilter --> TaskStatus : uses
+    TaskFilter --> TaskPriority : uses
+
+    note for TaskItem "Record combining all Chapter 2 features:\n- Init-only properties (Id, Title, Description, Priority, DueDate, Tags)\n- Nullable types (Description?, DueDate?)\n- Immutable updates with 'with' expressions"
+    note for TaskAnalyzer "Pattern matching utilities:\n- Switch expressions for task analysis\n- Complex filtering logic\n- Summary statistics"
+    note for TaskFilter "Filtering criteria using nullable types\nand pattern matching"
+    note for Program "Demonstrates comprehensive usage of\nall Chapter 2 modern C# features"

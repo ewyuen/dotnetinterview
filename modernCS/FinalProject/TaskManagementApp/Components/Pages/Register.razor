@@ -1,0 +1,141 @@
+@page "/register"
+@inject TaskManager.Shared.Services.IAuthService AuthService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Register</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Register</h3>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(SuccessMessage))
+                    {
+                        <div class="alert alert-success">
+                            @SuccessMessage
+                        </div>
+                    }
+
+                    <EditForm Model="RegisterModel" OnValidSubmit="HandleRegister" FormName="registerForm">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <InputText id="email" @bind-Value="RegisterModel.Email" class="form-control" placeholder="Enter your email" />
+                            <ValidationMessage For="@(() => RegisterModel.Email)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <InputText id="firstName" @bind-Value="RegisterModel.FirstName" class="form-control" placeholder="Enter your first name" />
+                            <ValidationMessage For="@(() => RegisterModel.FirstName)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <InputText id="lastName" @bind-Value="RegisterModel.LastName" class="form-control" placeholder="Enter your last name" />
+                            <ValidationMessage For="@(() => RegisterModel.LastName)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <InputText id="password" @bind-Value="RegisterModel.Password" type="password" class="form-control" placeholder="Enter your password" />
+                            <ValidationMessage For="@(() => RegisterModel.Password)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Bio (Optional)</label>
+                            <InputTextArea id="bio" @bind-Value="RegisterModel.Bio" class="form-control" rows="3" placeholder="Tell us about yourself" />
+                            <ValidationMessage For="@(() => RegisterModel.Bio)" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary" disabled="@IsLoading">
+                                @if (IsLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    <text>Registering...</text>
+                                }
+                                else
+                                {
+                                    <text>Register</text>
+                                }
+                            </button>
+                        </div>
+                    </EditForm>
+
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="/login">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterViewModel RegisterModel { get; set; } = new();
+    private bool IsLoading { get; set; }
+    private string? SuccessMessage { get; set; }
+
+    private async System.Threading.Tasks.Task HandleRegister()
+    {
+        IsLoading = true;
+        SuccessMessage = null;
+
+        try
+        {
+            var result = await AuthService.RegisterAsync(new TaskManager.Shared.Models.RegisterRequest(
+                RegisterModel.Email,
+                RegisterModel.Password,
+                RegisterModel.FirstName,
+                RegisterModel.LastName,
+                RegisterModel.Bio));
+
+            if (result.Success)
+            {
+                SuccessMessage = "Registration successful! Please log in.";
+                RegisterModel = new RegisterViewModel(); // Reset form
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", $"Registration failed: {result.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public class RegisterViewModel
+    {
+       // [System.ComponentModel.DataAnnotations.Required]
+       // [System.ComponentModel.DataAnnotations.EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+     //   [System.ComponentModel.DataAnnotations.Required]
+      //  [System.ComponentModel.DataAnnotations.StringLength(50)]
+        public string FirstName { get; set; } = string.Empty;
+
+       // [System.ComponentModel.DataAnnotations.Required]
+    //    [System.ComponentModel.DataAnnotations.StringLength(50)]
+        public string LastName { get; set; } = string.Empty;
+
+      //  [System.ComponentModel.DataAnnotations.Required]
+      //  [System.ComponentModel.DataAnnotations.StringLength(100, MinimumLength = 6)]
+        public string Password { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.StringLength(500)]
+        public string? Bio { get; set; }
+    }
+}

@@ -1,0 +1,9 @@
+@startuml
+' Dependency Injection example diagram
+interface IService
+class Service
+class SimpleContainer
+
+Service ..|> IService
+SimpleContainer --> IService : resolves
+@enduml

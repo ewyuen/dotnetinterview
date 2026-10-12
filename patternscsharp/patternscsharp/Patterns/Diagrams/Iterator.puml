@@ -1,0 +1,9 @@
+@startuml
+' Iterator class diagram
+class Aggregate
+interface IIterator
+class ConcreteIterator
+
+Aggregate --> IIterator : creates
+ConcreteIterator ..|> IIterator
+@enduml

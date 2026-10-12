@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcStreaming";
+
+// Server Streaming: Get weather updates
+service Weather {
+  rpc GetWeatherStream (WeatherRequest) returns (stream WeatherUpdate);
+}
+
+// Client Streaming: Upload sensor data
+service Sensor {
+  rpc UploadSensorData (stream SensorReading) returns (UploadSummary);
+}
+
+// Bidirectional Streaming: Chat service
+service Chat {
+  rpc Join (stream ChatMessage) returns (stream ChatMessage);
+}
+
+// -----------------------------------------------------------------------------
+// Message definitions used by the services above
+// -----------------------------------------------------------------------------
+
+// Request to start a weather stream. Clients can specify a location and
+// optional parameters like update interval (seconds) and maximum number of
+// updates to receive.
+message WeatherRequest {
+  // Free-form location name (e.g. "Seattle, WA")
+  string location = 1;
+
+  // Optional geolocation coordinates
+  Location coords = 2;
+
+  // How often the server should send updates (in seconds). If 0, server
+  // chooses a sensible default.
+  int32 interval_seconds = 3;
+
+  // Maximum number of updates to send (0 = unlimited)
+  int32 max_updates = 4;
+
+  // Units: "metric" or "imperial". Optional - server may default to metric.
+  string units = 5;
+}
+
+// A single weather update pushed by the server.
+message WeatherUpdate {
+  // Human readable timestamp, ISO-8601 recommended (UTC)
+  string timestamp = 1;
+
+  // Location information for the update
+  Location location = 2;
+
+  // Temperature in chosen units
+  double temperature = 3;
+
+  // Humidity percentage (0-100)
+  double humidity = 4;
+
+  // Wind speed (units depend on request.units)
+  double wind_speed = 5;
+
+  // Short text summary (e.g. "Partly cloudy")
+  string summary = 6;
+
+  // Optional alert text (empty if none)
+  string alert = 7;
+}
+
+// GPS-like location information
+message Location {
+  // Optional human-friendly name
+  string name = 1;
+
+  // Latitude in decimal degrees
+  double latitude = 2;
+
+  // Longitude in decimal degrees
+  double longitude = 3;
+}
+
+// A single sensor reading sent by a client in a client-streaming RPC.
+message SensorReading {
+  // ID of the sending sensor
+  string sensor_id = 1;
+
+  // Unix epoch milliseconds or ISO timestamp in the "timestamp" field below
+  int64 epoch_ms = 2;
+
+  // Optional ISO-8601 timestamp
+  string timestamp = 3;
+
+  // Measured value
+  double value = 4;
+
+  // Units for the value (e.g. "C", "%", "m/s")
+  string unit = 5;
+
+  // Location where reading was taken
+  Location location = 6;
+
+  // Optional metadata map for extensibility
+  map<string, string> metadata = 7;
+}
+
+// Response returned after a client completes uploading sensor data.
+message UploadSummary {
+  // Number of readings processed
+  int32 total_readings = 1;
+
+  // Average of the provided values (where applicable)
+  double average_value = 2;
+
+  // Minimum and maximum values seen
+  double min_value = 3;
+  double max_value = 4;
+
+  // Number of readings that failed validation or were skipped
+  int32 failed_readings = 5;
+
+  // Optional message with human-friendly summary or error details
+  string message = 6;
+}
+
+// Chat message used in bidirectional streaming chat
+message ChatMessage {
+  // Sender display name
+  string user = 1;
+
+  // Message text
+  string text = 2;
+
+  // Optional room or channel identifier
+  string room = 3;
+
+  // ISO-8601 timestamp (server may overwrite)
+  string timestamp = 4;
+
+  // If true, message is a system message rather than user-generated
+  bool system = 5;
+}

@@ -1,0 +1,11 @@
+@startuml
+' Strategy class diagram
+interface IStrategy
+class ConcreteStrategyA
+class ConcreteStrategyB
+class ContextStrategy
+
+ConcreteStrategyA ..|> IStrategy
+ConcreteStrategyB ..|> IStrategy
+ContextStrategy --> IStrategy : uses
+@enduml

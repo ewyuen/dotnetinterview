@@ -1,0 +1,88 @@
+@page "/tasks"
+@inject TaskManager.Shared.Services.ITaskService TaskService
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+<PageTitle>Tasks</PageTitle>
+
+@if (!IsAuthenticated)
+{
+    <div class="alert alert-warning">
+        <h4>Authentication Required</h4>
+        <p>You need to be logged in to view tasks.</p>
+        <a href="/login?returnUrl=/tasks" class="btn btn-primary">Login</a>
+        <a href="/register" class="btn btn-secondary">Register</a>
+    </div>
+}
+else
+{
+    <h1>Tasks</h1>
+
+    <p>
+        <a href="/tasks/create" class="btn btn-primary">Create New Task</a>
+        <button @onclick="Logout" class="btn btn-outline-secondary ms-2">Logout</button>
+    </p>
+
+    @if (tasks == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in tasks)
+                {
+                    <tr>
+                        <td>@task.Title</td>
+                        <td>@task.Status</td>
+                        <td>@task.Priority</td>
+                        <td>@task.DueDate?.ToString("g")</td>
+                        <td>
+                            <a href="/tasks/edit/@task.Id" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="/tasks/details/@task.Id" class="btn btn-sm btn-info">Details</a>
+                            <button @onclick="() => DeleteTask(task.Id)" class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private IEnumerable<TaskManager.Shared.Models.Task>? tasks;
+    private bool IsAuthenticated { get; set; }
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        IsAuthenticated = await AuthService.IsAuthenticatedAsync();
+
+        if (IsAuthenticated)
+        {
+            tasks = await TaskService.GetAllTasksAsync();
+        }
+    }
+
+    private async System.Threading.Tasks.Task DeleteTask(Guid id)
+    {
+        await TaskService.DeleteTaskAsync(id);
+        tasks = await TaskService.GetAllTasksAsync();
+    }
+
+    private async System.Threading.Tasks.Task Logout()
+    {
+        await AuthService.LogoutAsync();
+        IsAuthenticated = false;
+        Navigation.NavigateTo("/login");
+    }
+}

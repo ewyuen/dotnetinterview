@@ -1,0 +1,10 @@
+@startuml
+' Composite class diagram
+abstract class Component
+class Leaf
+class Composite
+
+Leaf --|> Component
+Composite --|> Component
+Composite --> Component : children
+@enduml

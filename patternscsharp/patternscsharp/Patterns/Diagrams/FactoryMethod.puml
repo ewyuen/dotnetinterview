@@ -1,0 +1,15 @@
+@startuml
+' Factory Method class diagram
+abstract class Product
+class ConcreteProductA
+class ConcreteProductB
+abstract class Creator
+class ConcreteCreatorA
+class ConcreteCreatorB
+
+ConcreteProductA --|> Product
+ConcreteProductB --|> Product
+ConcreteCreatorA --|> Creator
+ConcreteCreatorB --|> Creator
+Creator --> Product : creates
+@enduml

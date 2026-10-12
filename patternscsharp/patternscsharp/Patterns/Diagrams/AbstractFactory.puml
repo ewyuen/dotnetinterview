@@ -1,0 +1,25 @@
+@startuml
+' Abstract Factory class diagram
+interface IGUIFactory
+interface IButton
+interface ICheckbox
+class WinFactory
+class MacFactory
+class WinButton
+class MacButton
+class WinCheckbox
+class MacCheckbox
+
+WinFactory ..|> IGUIFactory
+MacFactory ..|> IGUIFactory
+WinButton ..|> IButton
+MacButton ..|> IButton
+WinCheckbox ..|> ICheckbox
+MacCheckbox ..|> ICheckbox
+
+WinFactory --> WinButton : creates
+WinFactory --> WinCheckbox : creates
+MacFactory --> MacButton : creates
+MacFactory --> MacCheckbox : creates
+
+@enduml

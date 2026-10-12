@@ -1,0 +1,100 @@
+# User-specific files
+.vscode/
+*.code-workspace
+
+# Build results
+bin/
+obj/
+**/bin/
+**/obj/
+
+# Visual Studio cache/options
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# Visual Studio temporary files
+*.tmp
+*.log
+
+**/.vs/ 
+
+# NuGet packages
+*.nupkg
+.nuget/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Runtime
+*.pid
+*.pid.lock
+
+# Mac files
+.DS_Store
+
+# Windows image file caches
+Thumbs.db
+
+# Local DB and generated files
+*.db
+*.sqlite
+*.mdf
+*.ldf
+
+# publish output
+publish/
+wwwroot/_framework/
+
+# dotnet user-secrets
+secrets.json
+
+# dotnet tool restore
+.toolstool
+
+# VS Code test output
+.vscode-test/
+
+# JetBrains Rider
+.idea/
+
+# Logs
+*.log
+
+# Coverage
+coverage*/
+*.coverage
+*.coveragexml
+
+# Azure Pipelines
+.azure-pipelines.yml
+
+# Docker
+*.dockerignore
+Dockerfile*
+
+# Node
+node_modules/
+
+# Files created by Visual Studio
+*.vsix
+
+# Ignore lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Local settings
+appsettings.Development.json
+
+# Mac-specific
+.AppleDouble
+.LSOverride
+
+# Ignore Project.assets.json
+**/project.assets.json

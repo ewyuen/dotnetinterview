@@ -1,0 +1,11 @@
+@startuml
+' Mediator class diagram
+class Mediator
+class ColleagueA
+class ColleagueB
+
+Mediator --> ColleagueA
+Mediator --> ColleagueB
+ColleagueA --> Mediator
+ColleagueB --> Mediator
+@enduml

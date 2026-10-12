@@ -1,0 +1,57 @@
+---
+title: Lab 4.2 - Async Patterns and Best Practices
+---
+
+flowchart TD
+    A[Async Operation] --> B{Exception Occurs?}
+
+    B -->|Yes| C[Exception Handling]
+    B -->|No| D[Normal Completion]
+
+    C --> E[try/catch in async method]
+    C --> F[AggregateException from Task.WhenAll]
+
+    D --> G[Cancellation Check]
+    G --> H{Cancelled?}
+    H -->|Yes| I[OperationCanceledException]
+    H -->|No| J[Continue Operation]
+
+    subgraph "Cancellation Patterns"
+        K[CancellationTokenSource] --> L[cts.Cancel()]
+        L --> M[Token.ThrowIfCancellationRequested]
+        M --> N[Cooperative Cancellation]
+
+        O[CreateLinkedTokenSource] --> P[Parent + Child Tokens]
+        P --> Q[Cancel via Parent Token]
+    end
+
+    subgraph "Timeout Patterns"
+        R[CancellationTokenSource with Timeout] --> S[Auto-cancel after timespan]
+        T[Task.WhenAny + Task.Delay] --> U[Manual timeout handling]
+    end
+
+    subgraph "Retry Patterns"
+        V[Operation Fails] --> W[Retry with Backoff]
+        W --> X[Exponential Delay]
+        X --> Y[Max Retries Check]
+        Y -->|Under Limit| V
+        Y -->|Exceeded| Z[Fail Permanently]
+    end
+
+    subgraph "Progress Reporting"
+        AA[IProgress&lt;T&gt;] --> BB[Report Method]
+        BB --> CC[UI Updates]
+        CC --> DD[Progress Callbacks]
+    end
+
+    subgraph "Async Lazy"
+        EE[First Access] --> FF[Initialize Task]
+        FF --> GG[Cache Result]
+        HH[Subsequent Access] --> II[Return Cached Task]
+    end
+
+    subgraph "Common Pitfalls"
+        JJ[async void] --> KK[Unhandled Exceptions]
+        LL[.Result / .Wait()] --> MM[Deadlocks]
+        NN[Multiple Threads] --> OO[Context Issues]
+    end

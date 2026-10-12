@@ -1,0 +1,52 @@
+---
+title: Lab 4.3 - Async Streams Flow
+---
+
+flowchart TD
+    A[Async Iterator Method] --> B[async IAsyncEnumerable&lt;T&gt;]
+
+    B --> C[yield return value]
+    C --> D[await Task.Delay]
+    D --> E[More values?]
+    E -->|Yes| C
+    E -->|No| F[End of stream]
+
+    G[Consumer] --> H[await foreach]
+    H --> I[GetAsyncEnumerator]
+    I --> J[MoveNextAsync]
+    J --> K[Value available?]
+    K -->|Yes| L[Process value]
+    K -->|No| M[Dispose enumerator]
+
+    L --> J
+
+    subgraph "Async Stream Creation"
+        N[async IAsyncEnumerable&lt;int&gt; GenerateNumbers]
+        N --> O[for loop with yield return]
+        O --> P[await Task.Delay between yields]
+    end
+
+    subgraph "Async Stream Consumption"
+        Q[await foreach (var item in stream)]
+        Q --> R[Automatic enumerator management]
+        Q --> S[Exception handling]
+        Q --> T[Cancellation support]
+    end
+
+    subgraph "Cancellation in Streams"
+        U[[EnumeratorCancellation] CancellationToken]
+        U --> V[ThrowIfCancellationRequested]
+        U --> W[Cooperative cancellation]
+    end
+
+    subgraph "Async LINQ Operations"
+        X[WhereAwait] --> Y[Async predicate evaluation]
+        Z[SelectAwait] --> AA[Async transformation]
+        BB[AggregateAsync] --> CC[Async accumulation]
+    end
+
+    subgraph "Stream Patterns"
+        DD[File Processing] --> EE[ReadLineAsync + yield return]
+        FF[Infinite Streams] --> GG[while true with cancellation]
+        HH[Stream Combination] --> II[Interleave/Merge operations]
+    end

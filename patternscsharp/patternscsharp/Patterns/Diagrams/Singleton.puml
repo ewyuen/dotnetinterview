@@ -1,0 +1,6 @@
+@startuml
+' Singleton class diagram
+class SingletonPattern
+
+note top: single instance accessed via Instance
+@enduml

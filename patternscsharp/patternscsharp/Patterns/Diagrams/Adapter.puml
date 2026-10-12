@@ -1,0 +1,9 @@
+@startuml
+' Adapter class diagram
+class Adaptee
+interface ITarget
+class Adapter
+
+Adapter ..|> ITarget
+Adapter --> Adaptee : uses
+@enduml

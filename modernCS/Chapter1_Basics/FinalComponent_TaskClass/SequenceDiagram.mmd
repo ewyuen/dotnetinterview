@@ -1,0 +1,69 @@
+﻿sequenceDiagram
+    participant P as Program
+    participant Book1 as Book("1984")
+    participant Car as Car
+    participant Bike as Bike
+    participant Library as Library<Book>
+    participant Task1 as Task
+
+    %% Lab 1.1: Book operations
+    rect rgb(240, 248, 255)
+        Note over P,Book1: Lab 1.1: Book Class Operations
+        P->>Book1: new Book("1984", "George Orwell", "123456")
+        P->>Book1: DisplayInfo()
+        Book1-->>P: "Title: 1984, Author: George Orwell..."
+        P->>Book1: CheckOut()
+        Book1-->>P: "1984 has been checked out."
+        P->>Book1: DisplayInfo()
+        Book1-->>P: "Available: False"
+        P->>Book1: Return()
+        Book1-->>P: "1984 has been returned."
+        P->>Book1: DisplayInfo()
+        Book1-->>P: "Available: True"
+    end
+
+    %% Lab 1.2: Inheritance operations
+    rect rgb(255, 248, 220)
+        Note over P,Bike: Lab 1.2: Inheritance with Vehicles
+        P->>Car: new Car("Toyota", "Camry", 2020, 4)
+        P->>Car: DisplayInfo()
+        Car-->>P: "Make: Toyota, Model: Camry, Year: 2020<br/>Number of Doors: 4"
+        P->>Bike: new Bike("Harley", "Sportster", 2019, true)
+        P->>Bike: DisplayInfo()
+        Bike-->>P: "Make: Harley, Model: Sportster, Year: 2019<br/>Has Sidecar: True"
+    end
+
+    %% Lab 1.3: Generics and Interfaces
+    rect rgb(240, 255, 240)
+        Note over P,Library: Lab 1.3: Generics and Interfaces
+        P->>Library: new Library<Book>()
+        P->>Library: Add(new Book("1984", "George Orwell", "123456"))
+        Library->>Library: _items.Add(book)
+        P->>Library: Add(new Book("To Kill a Mockingbird", "Harper Lee", "789012"))
+        Library->>Library: _items.Add(book)
+        P->>Library: Add(new Book("Pride and Prejudice", "Jane Austen", "345678"))
+        Library->>Library: _items.Add(book)
+        P->>Library: GetAll()
+        Library->>Book1: DisplayInfo()
+        Book1-->>Library: book info
+        Library-->>P: Display all books info
+        P->>Library: Search("George")
+        Library->>Library: Filter books by title/author
+        Library-->>P: IEnumerable<Book> with matching books
+        loop For each search result
+            P->>Book1: DisplayInfo()
+            Book1-->>P: book info
+        end
+    end
+
+    %% Final Component: Task operations
+    rect rgb(255, 240, 245)
+        Note over P,Task1: Final Component: Task Class
+        P->>Task1: new Task(1, "Complete C# Basics", "Finish all labs in Chapter 1")
+        P->>Task1: DisplayInfo()
+        Task1-->>P: "Id: 1, Title: Complete C# Basics..."
+        P->>Task1: UpdateDescription("Finish all labs... and test thoroughly")
+        P->>Task1: MarkCompleted()
+        P->>Task1: DisplayInfo()
+        Task1-->>P: "Completed: True..."
+    end

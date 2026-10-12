@@ -1,0 +1,68 @@
+---
+title: Lab 4.4 - Advanced Async Scenarios
+---
+
+flowchart TD
+    A[Advanced Async Concepts] --> B{Performance Optimization}
+
+    B --> C[ValueTask&lt;T&gt;]
+    C --> D[No Allocation for Sync Results]
+    C --> E[Struct vs Class Trade-offs]
+
+    A --> F[Custom Infrastructure]
+
+    F --> G[Custom Awaitables]
+    G --> H[GetAwaiter Method]
+    H --> I[INotifyCompletion]
+    I --> J[IsCompleted + OnCompleted]
+
+    F --> K[Async Method Builders]
+    K --> L[[AsyncMethodBuilder] Attribute]
+    L --> M[Custom Task Types]
+
+    F --> N[TaskCompletionSource]
+    N --> O[Manual Task Control]
+    O --> P[SetResult/SetException]
+
+    A --> Q[Context & State]
+
+    Q --> R[AsyncLocal&lt;T&gt;]
+    R --> S[Ambient Data Flow]
+    S --> T[Execution Context]
+
+    Q --> U[SynchronizationContext]
+    U --> V[Custom Threading Models]
+    V --> W[Continuation Scheduling]
+
+    A --> X[Dynamic Execution]
+
+    X --> Y[Task Parallelism]
+    Y --> Z[Runtime Task Creation]
+    Z --> AA[Semaphore Coordination]
+
+    subgraph "ValueTask Benefits"
+        BB[Fast Path] --> CC[Synchronous Result]
+        CC --> DD[No Heap Allocation]
+        DD --> EE[Better Performance]
+    end
+
+    subgraph "Awaitable Pattern"
+        FF[await expression] --> GG[GetAwaiter()]
+        GG --> HH[IsCompleted Check]
+        HH -->|True| II[GetResult()]
+        HH -->|False| JJ[OnCompleted()]
+        JJ --> KK[Continuation Scheduled]
+    end
+
+    subgraph "TaskCompletionSource Usage"
+        LL[Create TCS] --> MM[Return TCS.Task]
+        MM --> NN[Async Operation]
+        NN --> OO[SetResult/Exception/Canceled]
+    end
+
+    subgraph "AsyncLocal Flow"
+        PP[Set Value] --> QQ[ExecutionContext]
+        QQ --> RR[Async Operation]
+        RR --> SS[Value Inherited]
+        SS --> TT[Child Operations]
+    end

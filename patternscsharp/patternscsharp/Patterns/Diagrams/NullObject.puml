@@ -1,0 +1,9 @@
+@startuml
+' Null Object class diagram
+interface ILogger
+class ConsoleLogger
+class NullLogger
+
+ConsoleLogger ..|> ILogger
+NullLogger ..|> ILogger
+@enduml
